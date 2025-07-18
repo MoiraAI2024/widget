@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // --- Get attributes from the script tag ---
     // Use a query selector that is not dependent on the full URL.
-    const scriptTag = document.querySelector('script[src*="https://github.com/MoiraAI2024/widget/blob/main/moira-widget.js"]');
+    const scriptTag = document.querySelector('script[src*="https://raw.githubusercontent.com/MoiraAI2024/widget/refs/heads/main/moira-widget.js"]');
     const clientId = scriptTag ? scriptTag.getAttribute('data-client-id') : null;
     if (clientId) {
         console.log('Moira Widget: Client ID found:', clientId);
