@@ -1,13 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // It's good practice to wrap the script in a function to avoid global scope pollution.
-    // This is a combination of the user-provided example and the logic from the HTML file.
+    const urlParams = new URLSearchParams(window.location.search);
+    const scriptTag = document.querySelector('script[src*="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget.js"]');
+    // const scriptTag = document.querySelector('script[src*="http://localhost:8000/moira-widget.js"]');
 
-    // --- Get attributes from the script tag ---
-    // Use a query selector that is not dependent on the full URL.
-    const scriptTag = document.querySelector('script[src*="https://raw.githubusercontent.com/MoiraAI2024/widget/refs/heads/main/moira-widget.js"]');
-    const clientId = scriptTag ? scriptTag.getAttribute('data-client-id') : null;
+    const clientId = urlParams.get('data-client-id') || (scriptTag ? scriptTag.getAttribute('data-client-id') : null);
+    const questionText = urlParams.get('question-text') || (scriptTag ? scriptTag.getAttribute('question-text') : null);
+    const maxRetries = parseInt(urlParams.get('data-max-retries'), 10) || (scriptTag ? (parseInt(scriptTag.getAttribute('data-max-retries'), 10) || 3) : 3);
     if (clientId) {
         console.log('Moira Widget: Client ID found:', clientId);
+    }
+    if (questionText) {
+        console.log('Moira Widget: Question text found:', questionText);
+    }
+    if (maxRetries) {
+        console.log('Moira Widget: Max retries found:', maxRetries);
     }
 
     // --- CSS Styles ---
@@ -75,6 +81,21 @@ document.addEventListener("DOMContentLoaded", function() {
             fill: white;
         }
 
+        #moira-widget #retry-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 10;
+            display: none; /* Hidden by default */
+            text-align: center;
+            width: 200px;
+        }
+
         @keyframes moira-pulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(230, 71, 71, 0.7);
@@ -110,6 +131,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const recordButtonDiv = document.createElement('div');
     recordButtonDiv.id = 'record-button';
 
+    const retryMessageDiv = document.createElement('div');
+    retryMessageDiv.id = 'retry-message';
+    retryMessageDiv.textContent = "You don't have more retries";
+
     const micSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     micSvg.setAttribute('class', 'mic-icon');
     micSvg.setAttribute('viewBox', '0 0 24 24');
@@ -120,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
     recordButtonDiv.appendChild(micSvg);
     widgetContainer.appendChild(avatarImg);
     widgetContainer.appendChild(recordButtonDiv);
+    widgetContainer.appendChild(retryMessageDiv);
     moiraWidget.appendChild(widgetContainer);
 
     // Find a container to append to, or default to the body.
@@ -141,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let audioChunks = [];
     let isRecording = false;
     let sessionId = null;
+    let retries = 0;
 
     // Function to generate a random UUID for the session
     function generateSessionId() {
@@ -160,6 +187,14 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('Moira Widget: Session ID automatically generated:', sessionId);
 
     async function startRecording() {
+        if (retries >= maxRetries) {
+            const retryMessage = widget.querySelector('#retry-message');
+            retryMessage.style.display = 'block';
+            setTimeout(() => {
+                retryMessage.style.display = 'none';
+            }, 10000);
+            return;
+        }
         if (!sessionId) {
             alert("Session not initialized for Moira Widget.");
             return;
@@ -202,13 +237,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     async function sendAudioToApi(blob) {
-        recordButton.style.display = 'none'; // Hide button while processing
+        retries++;
+        recordButton.style.display = 'none';
         
         const formData = new FormData();
         formData.append('file', blob, 'recording.webm');
         formData.append('session_id', sessionId);
-        // This could be made dynamic in a future version
-        formData.append('question_text', 'Αυτό είναι ένα τετράδιο.'); 
+        formData.append('question_text', questionText); 
 
         try {
             const resp = await fetch('https://moira0teacher0gos0demo0backend.share.zrok.io/v1/ai_teacher', {
@@ -248,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         audio.onended = () => {
             avatar.classList.remove('speaking');
-            recordButton.style.display = 'flex'; // Show button again
+            recordButton.style.display = 'flex';
         };
 
         audio.onerror = (e) => {

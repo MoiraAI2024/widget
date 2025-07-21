@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moira Widget Host</title>
+    <title>Moira Widget Test</title>
     <style>
         body, html {
             margin: 0;
@@ -14,12 +14,20 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget.js" data-client-id="TheGreekOnlineSchool" question-text="Σήμερα είναι Πέμπτη" data-max-retries="3" defer></script> -->
-    <script src="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget.js" defer></script>
-    <!-- <script src="http://localhost:8000/moira-widget.js" defer></script> -->
+    <iframe 
+        src="http://localhost:8000/index.html?data-client-id=TheGreekOnlineSchool&question-text=Σήμερα%20είναι%20Πέμπτη&data-max-retries=1"
+        width="380" 
+        height="430"
+        frameborder="0"
+        scrolling="no"
+        title="Moira AI Teacher Widget"
+        allow="microphone"
+        style="border: none;">
+    </iframe>
 </body>
 </html>
