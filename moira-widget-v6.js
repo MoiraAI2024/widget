@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const scriptTag = document.querySelector('script[src*="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget-v6.js"]');
-    // const scriptTag = document.querySelector('script[src*="http://localhost:8000/moira-widget-v4.js"]');
+    // const scriptTag = document.querySelector('script[src*="http://localhost:8000/moira-widget-v6.js"]');
 
     const clientId = urlParams.get('data-client-id') || (scriptTag ? scriptTag.getAttribute('data-client-id') : null);
     const questionText = urlParams.get('question-text') || (scriptTag ? scriptTag.getAttribute('question-text') : null);
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (page === 'adult') {
         avatarImg.src = 'https://i.postimg.cc/pX8Ncg6K/Moira-teacher.png';
     } else if (page === 'kid') {
-        avatarImg.src = 'https://via.placeholder.com/266x399?text=Kid+Avatar';
+        avatarImg.src = 'https://i.postimg.cc/HLwKxR6r/Moira-kids-4.png';
         avatarImg.style.borderColor = '#4d8c86';
     } else {
         avatarImg.src = 'https://i.postimg.cc/pX8Ncg6K/Moira-teacher.png';

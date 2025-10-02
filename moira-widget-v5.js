@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (page === 'adult') {
         avatarImg.src = 'https://i.postimg.cc/pX8Ncg6K/Moira-teacher.png';
     } else if (page === 'kid') {
-        avatarImg.src = 'https://via.placeholder.com/266x399?text=Kid+Avatar';
+        avatarImg.src = 'https://i.postimg.cc/HLwKxR6r/Moira-kids-4.png';
         avatarImg.style.borderColor = '#4d8c86';
     } else {
         avatarImg.src = 'https://i.postimg.cc/pX8Ncg6K/Moira-teacher.png';
