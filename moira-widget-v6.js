@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const scriptTag = document.querySelector('script[src*="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget-v5.js"]');
+    const scriptTag = document.querySelector('script[src*="https://cdn.jsdelivr.net/gh/MoiraAI2024/widget@main/moira-widget-v6.js"]');
     // const scriptTag = document.querySelector('script[src*="http://localhost:8000/moira-widget-v4.js"]');
 
     const clientId = urlParams.get('data-client-id') || (scriptTag ? scriptTag.getAttribute('data-client-id') : null);
